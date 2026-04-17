@@ -14,6 +14,16 @@ Features:
 - Themes (mostly broken themes, to be fixed. Main theme is good though)
 - Extra esp32 knob!
 
+Prerequisites:
+- [Spicetify](https://spicetify.app/)
+- Python installed.
+
+Installation:
+Run the following command.
+`python -c "import os, subprocess, sys, platform; subprocess.check_call([sys.executable,'-m','venv','venv']); py=os.path.join('venv','Scripts' if os.name=='nt' else 'bin','python'); subprocess.check_call([py,'-m','pip','install','-r','requirements.txt']); subprocess.check_call([os.path.join('setup','windows.bat' if os.name=='nt' else 'linux.sh')], shell=True)"`
+
+And run `spicetify apply` to finalise the changes.
+
 <img width="681" height="389" alt="Screenshot_20260417_192540" src="https://github.com/user-attachments/assets/1b6a1d8f-9b41-40c6-bbf1-f435bcd44373" />
 
 <img width="691" height="396" alt="Screenshot_20260417_192624" src="https://github.com/user-attachments/assets/39ded442-fc8b-4633-9547-57f6738c136d" />
