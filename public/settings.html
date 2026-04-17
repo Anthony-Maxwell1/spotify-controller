@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskOS Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070f;
+            --panel: #0c1020;
+            --ink: #dfe6ff;
+            --muted: #8c93a8;
+            --accent: #1ffb8d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 1.5rem;
+            background: radial-gradient(circle at 15% 10%, #10152b, #05070f 40%), #05070f;
+            color: var(--ink);
+            font-family: "Manrope", "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+        }
+
+        a { color: inherit; }
+
+        .shell {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        h1 { margin: 0; font-size: 1.8rem; letter-spacing: 0.02em; }
+        p { margin: 0; color: var(--muted); }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 1.25rem 1.35rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+        }
+
+        .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+        .theme-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 1rem;
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .theme-card h3 { margin: 0; font-size: 1.05rem; }
+        .theme-card p { margin: 0; color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+
+        .row { display: flex; gap: 0.5rem; align-items: center; }
+        button {
+            font: inherit;
+            padding: 0.55rem 0.9rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.08);
+            color: var(--ink);
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+        button:hover { transform: translateY(-1px); border-color: var(--accent); }
+        button:active { transform: translateY(0); }
+
+        .pill {
+            font-size: 0.8rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(31, 251, 141, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(31, 251, 141, 0.4);
+        }
+
+        form { display: grid; gap: 0.85rem; }
+        label { display: grid; gap: 0.35rem; color: var(--muted); font-size: 0.95rem; }
+        input[type="color"], input[type="range"] {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            height: 42px;
+        }
+        input[type="range"] { height: auto; }
+        .switch { display: flex; align-items: center; gap: 0.6rem; }
+        .muted { color: var(--muted); }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header>
+            <div>
+                <h1>DeskOS Settings</h1>
+                <p>Pick a theme and tweak a few global options.</p>
+            </div>
+            <a id="backLink" href="index.html">Back to player</a>
+        </header>
+
+        <section class="card">
+            <div class="row" style="justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="margin:0 0 0.25rem;">Themes</h2>
+                    <p>Choose a layout. Selecting one redirects you immediately.</p>
+                </div>
+                <span id="activePill" class="pill">Active: Sharp</span>
+            </div>
+            <div id="themeGrid" class="grid"></div>
+        </section>
+
+        <section class="card">
+            <h2 style="margin:0 0 0.25rem;">Theme Settings</h2>
+            <p style="margin:0 0 1rem;" class="muted">These values are stored locally and can be read by themes.</p>
+            <form id="themeSettingsForm">
+                <label>
+                    Accent color
+                    <input id="accent" type="color" value="#1ffb8d" />
+                </label>
+                <label>
+                    Border radius (px)
+                    <input id="radius" type="range" min="0" max="32" value="16" />
+                </label>
+                <label class="switch">
+                    <input id="crtNoise" type="checkbox" />
+                    <span>Enable CRT noise (for Terminal-CRT)</span>
+                </label>
+                <div class="row" style="justify-content:flex-end;">
+                    <button type="button" id="resetSettings">Reset</button>
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="theme-router.js"></script>
+    <script>
+        const themeGrid = document.getElementById("themeGrid");
+        const activePill = document.getElementById("activePill");
+        const backLink = document.getElementById("backLink");
+
+        const settingsForm = document.getElementById("themeSettingsForm");
+        const accentInput = document.getElementById("accent");
+        const radiusInput = document.getElementById("radius");
+        const crtNoiseInput = document.getElementById("crtNoise");
+        const resetBtn = document.getElementById("resetSettings");
+
+        const SETTINGS_KEY = "deskos.themeSettings";
+        const defaultSettings = { accent: "#1ffb8d", radius: 16, crtNoise: true };
+
+        function loadSettings() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
+                return saved ? { ...defaultSettings, ...saved } : { ...defaultSettings };
+            } catch (e) {
+                return { ...defaultSettings };
+            }
+        }
+
+        function saveSettings(values) {
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(values));
+        }
+
+        function applyForm(values) {
+            accentInput.value = values.accent;
+            radiusInput.value = values.radius;
+            crtNoiseInput.checked = !!values.crtNoise;
+        }
+
+        function renderThemes() {
+            const current = deskThemes.getSaved();
+            const currentMeta = deskThemes.getMeta(current);
+            activePill.textContent = `Active: ${currentMeta.name}`;
+            backLink.href = currentMeta.file;
+
+            themeGrid.innerHTML = deskThemes.list.map(theme => {
+                const isActive = theme.id === current;
+                return `
+                    <div class="theme-card" data-id="${theme.id}">
+                        <div class="row" style="justify-content: space-between;">
+                            <div>
+                                <h3>${theme.name}</h3>
+                                <p>${theme.description}</p>
+                            </div>
+                            ${isActive ? '<span class="pill">Active</span>' : ''}
+                        </div>
+                        <div class="row" style="justify-content:flex-end;">
+                            <button data-action="preview">Open</button>
+                            <button data-action="apply">Make default</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        themeGrid.addEventListener("click", e => {
+            const card = e.target.closest(".theme-card");
+            if (!card) return;
+            const id = card.dataset.id;
+            const action = e.target.dataset.action;
+            if (action === "apply") {
+                deskThemes.go(id);
+            } else if (action === "preview") {
+                window.location.href = deskThemes.getMeta(id).file;
+            }
+        });
+
+        settingsForm.addEventListener("submit", e => {
+            e.preventDefault();
+            const values = {
+                accent: accentInput.value,
+                radius: Number(radiusInput.value),
+                crtNoise: crtNoiseInput.checked,
+            };
+            saveSettings(values);
+        });
+
+        resetBtn.addEventListener("click", () => {
+            saveSettings(defaultSettings);
+            applyForm(defaultSettings);
+        });
+
+        // bootstrap
+        renderThemes();
+        applyForm(loadSettings());
+    </script>
+</body>
+</html>

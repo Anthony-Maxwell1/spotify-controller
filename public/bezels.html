@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskOS</title>
+    <link rel="stylesheet" href="bezels.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a href="settings.html" style="position: fixed; top: 12px; right: 12px; background: rgba(0,0,0,0.35); color: #f7f7f7; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); text-decoration: none;">Settings</a>
+    <main class="flex-row root">
+        <!-- LEFT: Player controls -->
+        <section class="card flex-col player">
+            <img id="albumArt" alt="Album art" />
+
+            <div class="flex-row progress">
+                <span class="time" id="currentTime">0:00</span>
+                <input id="seekBar" type="range" min="0" max="100" value="0" />
+                <span class="time" id="totalTime">0:00</span>
+            </div>
+
+            <div class="flex-row controls">
+                <button onclick="action_previous()">⏮</button>
+                <button onclick="action_toggle_play()">⏯</button>
+                <button onclick="action_next()">⏭</button>
+            </div>
+
+            <div class="flex-row secondary-controls">
+                <button id="shuffleBtn" onclick="action_shuffle()">🔀</button>
+                <button id="repeatBtn" onclick="action_repeat()">🔂</button>
+                <button id="likeBtn" onclick="action_like_unlike()">♡</button>
+            </div>
+        </section>
+
+        <!-- RIGHT: Song info -->
+        <section class="card flex-col info">
+            <div class="flex-row space-between">
+                <div>
+                    <h2 id="songtitle">(song title)</h2>
+                    <h3 id="songinfo">(artist) – (album)</h3>
+                    <div class="badge-row">
+                        <span class="pill">Now Playing</span>
+                        <a id="playlistname" href="#">(playlist)</a>
+                    </div>
+                </div>
+                <button class="ghost" onclick="action_go_to_album()">Album →</button>
+            </div>
+
+            <div class="flex-row" style="gap:1rem; align-items:flex-start;">
+                <!-- UP NEXT -->
+                <div class="flex-col upnext">
+                    <h2>Up Next</h2>
+                    <div class="overlay">
+                        <img id="upnext_art" alt="Next album art" />
+                        <div class="overlay-text">
+                            <h3 id="upnext_songtitle">(song)</h3>
+                            <h4 id="upnext_info">(artist – album)</h4>
+                        </div>
+                    </div>
+                </div>
+            <button id="openDrawer">Browse ▸</button>
+        </section>
+    </main>
+
+    <aside id="drawer">
+        <div class="drawer-header">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="playlists">Playlists</button>
+                <button class="tab-button" data-tab="search">Search</button>
+            </div>
+            <button id="closeDrawer" class="ghost">✕</button>
+        </div>
+
+        <div class="tab-pane active" id="tab-playlists">
+            <div class="list" id="playlistsList"></div>
+        </div>
+
+        <div class="tab-pane" id="tab-search">
+            <form id="searchForm">
+                <input id="searchInput" type="text" placeholder="Search tracks or albums" autocomplete="off" />
+                <button type="submit">Go</button>
+            </form>
+            <div class="list" id="searchResults"></div>
+        </div>
+    </aside>
+
+    <div id="backdrop"></div>
+</body>
+</html>

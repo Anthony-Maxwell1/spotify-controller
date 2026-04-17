@@ -1,0 +1,42 @@
+@import url('./terminal.css');
+
+:root {
+    --crt-glow: rgba(24, 242, 139, 0.25);
+}
+
+body {
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, rgba(24,242,139,0.12), rgba(0,0,0,0.92)), #010301;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.05), rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode: overlay;
+    opacity: 0.25;
+    z-index: 999;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(24,242,139,0.25), transparent 45%);
+    filter: blur(60px);
+    opacity: 0.4;
+    z-index: 998;
+}
+
+.box, .btn, .list-item, #albumArt, #upnext_art {
+    box-shadow: 0 0 24px var(--crt-glow), inset 0 0 12px rgba(0,0,0,0.6);
+}
+
+#albumArt, #upnext_art {
+    filter: contrast(1.1) saturate(1.2);
+}
+
+.settings-link { box-shadow: 0 0 12px var(--crt-glow); }

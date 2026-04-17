@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeskOS · Lyrics</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="lyrics.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="theme-router.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a class="settings-link" href="settings.html">Settings</a>
+    <main class="shell root">
+        <section class="panel left-card">
+            <img id="albumArt" alt="Album art" />
+            <div>
+                <p class="muted" style="letter-spacing:0.14em; text-transform:uppercase; margin:0;">Now Playing</p>
+                <h2 id="songtitle" style="margin:4px 0 6px;">(song title)</h2>
+                <p id="songinfo">(artist) – (album)</p>
+                <a id="playlistname" href="#">(playlist)</a>
+            </div>
+            <div class="timeline">
+                <div class="time-row"><span id="currentTime">0:00</span><span id="totalTime">0:00</span></div>
+                <input id="seekBar" type="range" min="0" max="100" value="0" />
+            </div>
+        </section>
+
+        <section class="panel center-lyrics">
+            <div id="lyricsDisplay">(lyrics)</div>
+            <div id="lyricsTimestamp">00:00</div>
+        </section>
+
+        <section class="panel right-stack">
+            <div class="upnext-card">
+                <img id="upnext_art" alt="Next album art" />
+                <div class="upnext-overlay">
+                    <p class="muted" style="margin:0; font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase;">Up Next</p>
+                    <h3 id="upnext_songtitle" style="margin:0;">(song)</h3>
+                    <p id="upnext_info" style="margin:0;">(artist – album)</p>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="row">
+                    <button id="previousBtn" class="button material-symbols-outlined" onclick="action_previous()">skip_previous</button>
+                    <button id="playPauseBtn" class="button accent material-symbols-outlined" onclick="action_toggle_play()">play_arrow</button>
+                    <button id="nextBtn" class="button material-symbols-outlined" onclick="action_next()">skip_next</button>
+                </div>
+                <div class="row">
+                    <button id="shuffleBtn" class="button material-symbols-outlined" onclick="action_shuffle()">shuffle</button>
+                    <button id="repeatBtn" class="button material-symbols-outlined" onclick="action_repeat()">repeat</button>
+                    <button id="likeBtn" class="button material-symbols-outlined" onclick="action_like_unlike()">favorite_border</button>
+                </div>
+                <div class="row">
+                    <button id="openDrawer" class="button" onclick="action_search()">Discover</button>
+                    <button id="playAlbum" class="button" onclick="action_go_to_album()">Album</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <aside id="drawer">
+        <div class="drawer-header">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="playlists">Playlists</button>
+                <button class="tab-button" data-tab="search">Search</button>
+            </div>
+            <button id="closeDrawer" class="tab-button">✕</button>
+        </div>
+        <div class="tab-pane active" id="tab-playlists">
+            <div class="list" id="playlistsList"></div>
+        </div>
+        <div class="tab-pane" id="tab-search">
+            <form id="searchForm">
+                <input id="searchInput" type="text" placeholder="Search tracks or albums" autocomplete="off" />
+                <button type="submit" class="tab-button">Go</button>
+            </form>
+            <div class="list" id="searchResults"></div>
+        </div>
+    </aside>
+    <div id="backdrop"></div>
+
+    <script>
+        const demoLyrics = [
+            { time: 0, text: "Woke up with the city breathing" },
+            { time: 12, text: "Neon hum keeps repeating" },
+            { time: 24, text: "Heartbeats sync to the train line" },
+            { time: 36, text: "We move in time" },
+            { time: 48, text: "Hands up, skyline in our eyes" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const display = document.getElementById("lyricsDisplay");
+            const stamp = document.getElementById("lyricsTimestamp");
+            if (!display || !stamp) return;
+            const current = demoLyrics[0];
+            display.textContent = current.text;
+            stamp.textContent = `${String(Math.floor(current.time / 60)).padStart(2, "0")}:${String(current.time % 60).padStart(2, "0")}`;
+        });
+    </script>
+</body>
+</html>

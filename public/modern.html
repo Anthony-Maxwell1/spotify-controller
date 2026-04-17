@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeskOS · Modern</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="modern.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="theme-router.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a class="settings-link" href="settings.html">Settings</a>
+    <main class="main-shell root">
+        <section class="card hero">
+            <div class="art-wrap">
+                <img id="albumArt" alt="Album art" />
+            </div>
+            <div class="now">
+                <p class="eyebrow">Now Playing</p>
+                <h1 id="songtitle">(song title)</h1>
+                <p id="songinfo">(artist) – (album)</p>
+                <a id="playlistname" href="#">(playlist)</a>
+
+                <div class="controls">
+                    <div class="row">
+                        <button id="previousBtn" class="icon-btn material-symbols-outlined" aria-label="Previous" onclick="action_previous()">skip_previous</button>
+                        <button id="playPauseBtn" class="icon-btn accent material-symbols-outlined" aria-label="Play or pause" onclick="action_toggle_play()">play_arrow</button>
+                        <button id="nextBtn" class="icon-btn material-symbols-outlined" aria-label="Next" onclick="action_next()">skip_next</button>
+                    </div>
+                    <div class="row">
+                        <button id="shuffleBtn" class="icon-btn slim material-symbols-outlined" aria-label="Shuffle" onclick="action_shuffle()">shuffle</button>
+                        <button id="repeatBtn" class="icon-btn slim material-symbols-outlined" aria-label="Repeat" onclick="action_repeat()">repeat</button>
+                        <button id="likeBtn" class="icon-btn slim material-symbols-outlined" aria-label="Like" onclick="action_like_unlike()">favorite_border</button>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <div class="time-row">
+                        <span id="currentTime">0:00</span>
+                        <span id="totalTime">0:00</span>
+                    </div>
+                    <input id="seekBar" type="range" min="0" max="100" value="0" aria-label="Seek" />
+                </div>
+            </div>
+        </section>
+
+        <section class="card info-card">
+            <div class="upnext-card">
+                <img id="upnext_art" alt="Next album art" />
+                <div>
+                    <p class="eyebrow" style="margin:0 0 4px;">Queued Track</p>
+                    <h3 id="upnext_songtitle" style="margin:0;">(song)</h3>
+                    <p id="upnext_info" style="margin:4px 0 0;" class="muted">(artist – album)</p>
+                </div>
+            </div>
+            <div class="cta-stack">
+                <button id="openDrawer" class="cta" onclick="action_search()">Discover<span class="material-symbols-outlined" aria-hidden="true">unfold_more</span></button>
+                <button id="playAlbum" class="cta" onclick="action_go_to_album()">Play from album<span class="material-symbols-outlined" aria-hidden="true">album</span></button>
+            </div>
+        </section>
+    </main>
+
+    <aside id="drawer">
+        <div class="drawer-header">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="playlists">Playlists</button>
+                <button class="tab-button" data-tab="search">Search</button>
+            </div>
+            <button id="closeDrawer" class="tab-button" style="border-radius:12px;">✕</button>
+        </div>
+
+        <div class="tab-pane active" id="tab-playlists">
+            <div class="list" id="playlistsList"></div>
+        </div>
+
+        <div class="tab-pane" id="tab-search">
+            <form id="searchForm">
+                <input id="searchInput" type="text" placeholder="Search tracks or albums" autocomplete="off" />
+                <button type="submit" class="tab-button">Go</button>
+            </form>
+            <div class="list" id="searchResults"></div>
+        </div>
+    </aside>
+
+    <div id="backdrop"></div>
+</body>
+</html>

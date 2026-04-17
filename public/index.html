@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeskOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main class="surface root">
+        <section class="art-panel">
+            <div class="art-stack">
+                <img id="albumArt" alt="Album art" />
+
+                <div class="art-overlay">
+                    <div class="title-cluster">
+                        <p class="eyebrow">Now Playing <a id="playlistname" class="source-pill" href="#">(playlist)</a></p> 
+                        <h1 id="songtitle">(song title)</h1>
+                        <p class="meta" id="songinfo">(artist) – (album)</p>
+                    </div>
+                    <button id="likeBtn" class="icon-chip material-symbols-outlined" aria-label="Like this track" onclick="action_like_unlike()">favorite_border</button>
+                </div>
+
+                <div class="control-pad">
+                    <div class="button-row primary">
+                        <button id="previousBtn" class="icon-btn material-symbols-outlined" aria-label="Previous track" onclick="action_previous()">skip_previous</button>
+                        <button id="playPauseBtn" class="icon-btn accent material-symbols-outlined" aria-label="Play or pause" onclick="action_toggle_play()">play_arrow</button>
+                        <button id="nextBtn" class="icon-btn material-symbols-outlined" aria-label="Next track" onclick="action_next()">skip_next</button>
+                    </div>
+                    <div class="button-row secondary">
+                        <button id="shuffleBtn" class="icon-btn slim material-symbols-outlined" aria-label="Toggle shuffle" onclick="action_shuffle()">shuffle</button>
+                        <button id="repeatBtn" class="icon-btn slim material-symbols-outlined" aria-label="Toggle repeat" onclick="action_repeat()">repeat</button>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <div class="time-row">
+                        <span class="time" id="currentTime">0:00</span>
+                        <span class="time" id="totalTime">0:00</span>
+                    </div>
+                    <input id="seekBar" type="range" min="0" max="100" value="0" aria-label="Seek playback position" />
+                </div>
+            </div>
+        </section>
+
+        <section class="info-panel">
+            <div class="upnext-block">
+                <div class="next-card">
+                    <img id="upnext_art" alt="Next album art" />
+                    <div class="next-details">
+                        <p class="next-label">Queued Track</p>
+                        <h3 id="upnext_songtitle">(song)</h3>
+                        <p id="upnext_info">(artist – album)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-column">
+                <button id="openDrawer" class="cta discover" onclick="action_search()">
+                    <span>Discover</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">unfold_more</span>
+                </button>
+                <button id="playAlbum" class="cta play" onclick="action_go_to_album()">
+                    <span>Play from album</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">album</span>
+                </button>
+            </div>
+        </section>
+        <a href="settings.html" style="position: fixed; top: 15px; right: 15px;" class="material-symbols-outlined">settings</a>
+    </main>
+
+    <aside id="drawer">
+        <div class="drawer-header">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="playlists">Playlists</button>
+                <button class="tab-button" data-tab="search">Search</button>
+            </div>
+            <button id="closeDrawer" class="ghost">✕</button>
+        </div>
+
+        <div class="tab-pane active" id="tab-playlists">
+            <div class="list" id="playlistsList"></div>
+        </div>
+
+        <div class="tab-pane" id="tab-search">
+            <form id="searchForm">
+                <input id="searchInput" type="text" placeholder="Search tracks or albums" autocomplete="off" />
+                <button type="submit">Go</button>
+            </form>
+            <div class="list" id="searchResults"></div>
+        </div>
+    </aside>
+
+    <div id="backdrop"></div>
+</body>
+</html>
