@@ -3,7 +3,7 @@
 
 A spotify controller. Pages are mainly oriented around iPhone 8 size, however should work for larger/smaller screens.
 
-Features:
+### Features:
 - No spotify premium required. Works through spicetify.
 - Setup script, no technical knowledge required.
 - Play, pause, skip.
@@ -14,11 +14,11 @@ Features:
 - Themes (mostly broken themes, to be fixed. Main theme is good though)
 - Extra esp32 knob!
 
-Prerequisites:
+### Prerequisites:
 - [Spicetify](https://spicetify.app/)
 - Python installed.
 
-Installation:
+### Installation:
 Run the following command.
 `python -c "import os, subprocess, sys, platform; subprocess.check_call([sys.executable,'-m','venv','venv']); py=os.path.join('venv','Scripts' if os.name=='nt' else 'bin','python'); subprocess.check_call([py,'-m','pip','install','-r','requirements.txt']); subprocess.check_call([os.path.join('setup','windows.bat' if os.name=='nt' else 'linux.sh')], shell=True)"`
 
